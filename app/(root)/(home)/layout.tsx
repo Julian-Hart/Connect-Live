@@ -1,6 +1,15 @@
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import React from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "CLive",
+  description: "Video call app",
+  icons: {
+    icon: "/icons/logo.svg",
+  },
+};
 
 const HomeLayout = ({ children }: { children: React.ReactNode }) => {
   return (
