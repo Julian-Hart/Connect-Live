@@ -1,14 +1,25 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useGetCalls } from "../hooks/useGetCalls";
 
 const HomeHeader = () => {
-  const [time, setTime] = useState(
-    new Date().toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-  );
+  const { upcomingCalls } = useGetCalls();
+  const upcomingCallTime = () => {
+    if (upcomingCalls && upcomingCalls.length > 0) {
+      const call = upcomingCalls[0];
+      const startsAt = call.state?.startsAt;
+      if (startsAt) {
+        return `Upcoming Call at ${startsAt.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}`;
+      }
+    }
+    return "No upcoming calls";
+  };
+
+  const [time, setTime] = useState(new Date().toLocaleTimeString("en-US"));
   const [date, setDate] = useState(
     new Intl.DateTimeFormat("en-US", {
       dateStyle: "full",
@@ -36,7 +47,7 @@ const HomeHeader = () => {
     <div className="h-[300px] w-full rounded-[20px] bg-hero bg-cover">
       <div className="flex h-full flex-col justify-between max-md:px-5 max-md:py-8 lg:p-11">
         <h2 className="glassmorphism max-w-[270px] rounded py-2 text-center text-base font-normal">
-          Upcoming Meeting at {time}
+          {upcomingCallTime()}
         </h2>
         <div className="flex flex-col gap-2">
           <h1 className="text-4xl font-extrabold lg:text-7xl">{time}</h1>
